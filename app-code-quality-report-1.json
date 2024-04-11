@@ -1,0 +1,165 @@
+
+FILE: /var/www/html/magento245p1/app/code/Elsnertech/Paytrace/Block/System/Config/Form/Field/Disable.php
+--------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 2 WARNINGS AFFECTING 2 LINES
+--------------------------------------------------------------------------------------------------------
+  8 | WARNING | [ ] Comment block is missing
+ 13 | WARNING | [x] Expected 1 newline at end of file; 0 found
+--------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+--------------------------------------------------------------------------------------------------------
+
+
+FILE: /var/www/html/magento245p1/app/code/Elsnertech/Paytrace/view/adminhtml/templates/form/paytrace.phtml
+-----------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 14 WARNINGS AFFECTING 14 LINES
+-----------------------------------------------------------------------------------------------------------
+ 13 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 22 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 29 | WARNING | [x] Using escapeHtmlAttr on $block is deprecated. Please use equivalent method on $escaper
+ 31 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 39 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 44 | WARNING | [x] Using escapeHtmlAttr on $block is deprecated. Please use equivalent method on $escaper
+ 51 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 58 | WARNING | [x] Using escapeHtmlAttr on $block is deprecated. Please use equivalent method on $escaper
+ 60 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 67 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 69 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 79 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 82 | WARNING | [x] Using escapeHtmlAttr on $block is deprecated. Please use equivalent method on $escaper
+ 97 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+-----------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 14 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+-----------------------------------------------------------------------------------------------------------
+
+
+FILE: /var/www/html/magento245p1/app/code/Elsnertech/Paytrace/view/adminhtml/templates/form/paytracevault.phtml
+---------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 3 WARNINGS AFFECTING 3 LINES
+---------------------------------------------------------------------------------------------------------------
+ 13 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 20 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 34 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+---------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 3 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+---------------------------------------------------------------------------------------------------------------
+
+
+FILE: /var/www/html/magento245p1/app/code/Elsnertech/Paytrace/view/frontend/web/css/source/_paytrace.less
+---------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 7 WARNINGS AFFECTING 7 LINES
+---------------------------------------------------------------------------------------------------------
+ 28 | WARNING | Properties sorted not alphabetically
+ 30 | WARNING | Values starts from "0"
+ 34 | WARNING | Values starts from "0"
+ 41 | WARNING | Properties sorted not alphabetically
+ 64 | WARNING | Properties sorted not alphabetically
+ 66 | WARNING | A variable should be used for a CSS colour
+ 81 | WARNING | Properties sorted not alphabetically
+---------------------------------------------------------------------------------------------------------
+
+
+FILE: /var/www/html/magento245p1/app/code/Elsnertech/Paytrace/view/frontend/templates/form/paytrace.phtml
+------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 19 WARNINGS AFFECTING 19 LINES
+------------------------------------------------------------------------------------------------------------
+  13 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+  22 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+  34 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+  36 | WARNING | [x] Using escapeHtmlAttr on $block is deprecated. Please use equivalent method on $escaper
+  38 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+  46 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+  50 | WARNING | [x] Using escapeHtmlAttr on $block is deprecated. Please use equivalent method on $escaper
+  60 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+  73 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+  75 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+  86 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+  88 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 100 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 103 | WARNING | [x] Using escapeHtmlAttr on $block is deprecated. Please use equivalent method on $escaper
+ 112 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 113 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 117 | WARNING | [x] Using escapeHtmlAttr on $block is deprecated. Please use equivalent method on $escaper
+ 120 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 137 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 19 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+------------------------------------------------------------------------------------------------------------
+
+
+FILE: /var/www/html/magento245p1/app/code/Elsnertech/Paytrace/view/frontend/templates/form/paytracevault.phtml
+--------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 2 WARNINGS AFFECTING 2 LINES
+--------------------------------------------------------------------------------------------------------------
+ 14 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+ 22 | WARNING | [x] Using escapeHtml on $block is deprecated. Please use equivalent method on $escaper
+--------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 2 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+--------------------------------------------------------------------------------------------------------------
+
+
+FILE: /var/www/html/magento245p1/app/code/Elsnertech/Paytrace/Model/Api/Api.php
+-------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 3 WARNINGS AFFECTING 1 LINE
+-------------------------------------------------------------------------------
+ 196 | WARNING | [ ] Expected "if (...) {\n"; found "if(...){\n"
+ 196 | WARNING | [x] Expected 1 space after IF keyword; 0 found
+ 196 | WARNING | [x] Expected 1 space after closing parenthesis; found 0
+-------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 2 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+-------------------------------------------------------------------------------
+
+
+FILE: /var/www/html/magento245p1/app/code/Elsnertech/Paytrace/Model/Payment/Paytracevault.php
+---------------------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+---------------------------------------------------------------------------------------------------------------------------------
+ 20 | WARNING | Creation of dynamic property Elsnertech\Paytrace\Model\Payment\Paytracevault::$vault is deprecated since PHP 8.2
+---------------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: /var/www/html/magento245p1/app/code/Elsnertech/Paytrace/Plugin/Block/Adminhtml/Payment/View.php
+-------------------------------------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 3 WARNINGS AFFECTING 3 LINES
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ 26 | WARNING | Creation of dynamic property Elsnertech\Paytrace\Plugin\Block\Adminhtml\Payment\View::$_backendUrl is deprecated since PHP 8.2
+ 27 | WARNING | Creation of dynamic property Elsnertech\Paytrace\Plugin\Block\Adminhtml\Payment\View::$_coreRegistry is deprecated since PHP 8.2
+ 43 | WARNING | Creation of dynamic property Elsnertech\Paytrace\Plugin\Block\Adminhtml\Payment\View::$_request is deprecated since PHP 8.2
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: /var/www/html/magento245p1/app/code/Elsnertech/Paytrace/Controller/Adminhtml/Transaction/Statuscheck.php
+--------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+--------------------------------------------------------------------------------------------------------------
+ 14 | WARNING | [x] There must be one blank line after the last USE statement; 2 found;
+--------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+--------------------------------------------------------------------------------------------------------------
+
+
+FILE: /var/www/html/magento245p1/app/code/Elsner/Sales/Model/ResourceModel/Order/Grid/Collection.php
+----------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 6 WARNINGS AFFECTING 6 LINES
+----------------------------------------------------------------------------------------------------
+ 20 | WARNING | [x] Whitespace found at end of line
+ 22 | WARNING | [x] Whitespace found at end of line
+ 23 | WARNING | [x] Whitespace found at end of line
+ 26 | WARNING | [ ] Possible useless method overriding detected
+ 37 | WARNING | [ ] Comment block is missing
+ 47 | WARNING | [x] Expected 1 newline at end of file; 0 found
+----------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 4 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+----------------------------------------------------------------------------------------------------
+
+
+FILE: /var/www/html/magento245p1/app/code/Elsner/Sales/registration.php
+-----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------
+ 8 | WARNING | [x] Expected 1 blank line at end of file; 2 found
+-----------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+-----------------------------------------------------------------------
+
+
