@@ -6,6 +6,7 @@ use GraphQL\Executor\ExecutionResult;
 use GraphQL\Language\Source;
 use GraphQL\Language\SourceLocation;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Utils\Utils;
 
 /**
  * This class is used for [default error formatting](error-handling.md).
@@ -16,6 +17,8 @@ use GraphQL\Type\Definition\Type;
  *
  * @phpstan-import-type SerializableError from ExecutionResult
  * @phpstan-import-type ErrorFormatter from ExecutionResult
+ *
+ * @see \GraphQL\Tests\Error\FormattedErrorTest
  */
 class FormattedError
 {
@@ -41,7 +44,7 @@ class FormattedError
         $printedLocations = [];
 
         $nodes = $error->nodes;
-        if (isset($nodes) && \count($nodes) > 0) {
+        if (isset($nodes) && $nodes !== []) {
             foreach ($nodes as $node) {
                 $location = $node->loc;
                 if (isset($location)) {
@@ -54,14 +57,14 @@ class FormattedError
                     }
                 }
             }
-        } elseif ($error->getSource() !== null && \count($error->getLocations()) !== 0) {
+        } elseif ($error->getSource() !== null && $error->getLocations() !== []) {
             $source = $error->getSource();
             foreach ($error->getLocations() as $location) {
                 $printedLocations[] = self::highlightSourceAtLocation($source, $location);
             }
         }
 
-        return \count($printedLocations) === 0
+        return $printedLocations === []
             ? $error->getMessage()
             : \implode("\n\n", \array_merge([$error->getMessage()], $printedLocations)) . "\n";
     }
@@ -82,17 +85,15 @@ class FormattedError
         $nextLineNum = (string) ($contextLine + 1);
         $padLen = \strlen($nextLineNum);
 
-        $lines = \preg_split('/\r\n|[\n\r]/', $source->body);
-        \assert(\is_array($lines), 'given the regex is valid');
-
-        $lines[0] = self::whitespace($source->locationOffset->column - 1) . $lines[0];
+        $lines = Utils::splitLines($source->body);
+        $lines[0] = self::spaces($source->locationOffset->column - 1) . $lines[0];
 
         $outputLines = [
             "{$source->name} ({$contextLine}:{$contextColumn})",
-            $line >= 2 ? (self::lpad($padLen, $prevLineNum) . ': ' . $lines[$line - 2]) : null,
-            self::lpad($padLen, $lineNum) . ': ' . $lines[$line - 1],
-            self::whitespace(2 + $padLen + $contextColumn - 1) . '^',
-            $line < \count($lines) ? self::lpad($padLen, $nextLineNum) . ': ' . $lines[$line] : null,
+            $line >= 2 ? (self::leftPad($padLen, $prevLineNum) . ': ' . $lines[$line - 2]) : null,
+            self::leftPad($padLen, $lineNum) . ': ' . $lines[$line - 1],
+            self::spaces(2 + $padLen + $contextColumn - 1) . '^',
+            $line < \count($lines) ? self::leftPad($padLen, $nextLineNum) . ': ' . $lines[$line] : null,
         ];
 
         return \implode("\n", \array_filter($outputLines));
@@ -105,14 +106,14 @@ class FormattedError
             : 0;
     }
 
-    private static function whitespace(int $len): string
+    private static function spaces(int $length): string
     {
-        return \str_repeat(' ', $len);
+        return \str_repeat(' ', $length);
     }
 
-    private static function lpad(int $len, string $str): string
+    private static function leftPad(int $length, string $str): string
     {
-        return self::whitespace($len - \mb_strlen($str)) . $str;
+        return self::spaces($length - \mb_strlen($str)) . $str;
     }
 
     /**
@@ -127,7 +128,7 @@ class FormattedError
      *
      * @api
      */
-    public static function createFromException(\Throwable $exception, int $debugFlag = DebugFlag::NONE, ?string $internalErrorMessage = null): array
+    public static function createFromException(\Throwable $exception, int $debugFlag = DebugFlag::NONE, string $internalErrorMessage = null): array
     {
         $internalErrorMessage ??= self::$internalErrorMessage;
 
@@ -142,18 +143,18 @@ class FormattedError
                 static fn (SourceLocation $loc): array => $loc->toSerializableArray(),
                 $exception->getLocations()
             );
-            if (\count($locations) > 0) {
+            if ($locations !== []) {
                 $formattedError['locations'] = $locations;
             }
 
-            if ($exception->path !== null && \count($exception->path) > 0) {
+            if ($exception->path !== null && $exception->path !== []) {
                 $formattedError['path'] = $exception->path;
             }
         }
 
         if ($exception instanceof ProvidesExtensions) {
             $extensions = $exception->getExtensions();
-            if (\is_array($extensions) && \count($extensions) > 0) {
+            if (\is_array($extensions) && $extensions !== []) {
                 $formattedError['extensions'] = $extensions;
             }
         }
@@ -170,6 +171,8 @@ class FormattedError
      *
      * @param SerializableError $formattedError
      * @param int $debugFlag For available flags @see \GraphQL\Error\DebugFlag
+     *
+     * @throws \Throwable
      *
      * @return SerializableError
      */
@@ -288,9 +291,7 @@ class FormattedError
         return $formatted;
     }
 
-    /**
-     * @param mixed $var
-     */
+    /** @param mixed $var */
     public static function printVar($var): string
     {
         if ($var instanceof Type) {

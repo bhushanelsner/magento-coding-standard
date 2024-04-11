@@ -20,7 +20,7 @@ final class ParametersAcceptorSelectorVariantsWrapper
     {
         $variants = $reflection->getVariants();
         if ($node instanceof FunctionLike) {
-            return ParametersAcceptorSelector::selectSingle($variants);
+            return ParametersAcceptorSelector::combineAcceptors($variants);
         }
         if ($node->isFirstClassCallable()) {
             return ParametersAcceptorSelector::selectSingle($variants);

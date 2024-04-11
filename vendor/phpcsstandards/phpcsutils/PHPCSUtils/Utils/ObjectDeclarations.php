@@ -136,7 +136,6 @@ final class ObjectDeclarations
      *   - Handling of PHPCS annotations.
      *   - Handling of unorthodox docblock placement.
      * - Defensive coding against incorrect calls to this method.
-     * - Support for PHP 8.2 readonly classes.
      * - Additional `'abstract_token'`, `'final_token'`, and `'readonly_token'` indexes in the return array.
      *
      * @see \PHP_CodeSniffer\Files\File::getClassProperties()   Original source.
@@ -148,7 +147,7 @@ final class ObjectDeclarations
      * @param int                         $stackPtr  The position in the stack of the `T_CLASS`
      *                                               token to acquire the properties for.
      *
-     * @return array Array with implementation properties of a class.
+     * @return array<string, int|bool> Array with implementation properties of a class.
      *               The format of the return value is:
      *               ```php
      *               array(
@@ -273,8 +272,8 @@ final class ObjectDeclarations
      * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The stack position of the class or enum token.
      *
-     * @return array|false Array with names of the implemented interfaces or `FALSE` on
-     *                     error or if there are no implemented interface names.
+     * @return string[]|false Array with names of the implemented interfaces or `FALSE` on
+     *                        error or if there are no implemented interface names.
      */
     public static function findImplementedInterfaceNames(File $phpcsFile, $stackPtr)
     {
@@ -291,8 +290,8 @@ final class ObjectDeclarations
      * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
      * @param int                         $stackPtr  The stack position of the interface keyword.
      *
-     * @return array|false Array with names of the extended interfaces or `FALSE` on
-     *                     error or if there are no extended interface names.
+     * @return string[]|false Array with names of the extended interfaces or `FALSE` on
+     *                        error or if there are no extended interface names.
      */
     public static function findExtendedInterfaceNames(File $phpcsFile, $stackPtr)
     {
@@ -310,16 +309,16 @@ final class ObjectDeclarations
      *
      * @since 1.0.0
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile  The file where this token was found.
-     * @param int                         $stackPtr   The stack position of the
-     *                                                class/interface declaration keyword.
-     * @param int                         $keyword    The token constant for the keyword to examine.
-     *                                                Either `T_EXTENDS` or `T_IMPLEMENTS`.
-     * @param array                       $allowedFor Array of OO types for which use of the keyword
-     *                                                is allowed.
+     * @param \PHP_CodeSniffer\Files\File   $phpcsFile  The file where this token was found.
+     * @param int                           $stackPtr   The stack position of the
+     *                                                  class/interface declaration keyword.
+     * @param int                           $keyword    The token constant for the keyword to examine.
+     *                                                  Either `T_EXTENDS` or `T_IMPLEMENTS`.
+     * @param array<int|string, int|string> $allowedFor Array of OO types for which use of the keyword
+     *                                                  is allowed.
      *
-     * @return array|false Returns an array of names or `FALSE` on error or when the object
-     *                     being declared does not extend/implement another object.
+     * @return string[]|false Returns an array of names or `FALSE` on error or when the object
+     *                        being declared does not extend/implement another object.
      */
     private static function findNames(File $phpcsFile, $stackPtr, $keyword, array $allowedFor)
     {

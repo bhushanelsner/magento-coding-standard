@@ -4,13 +4,13 @@ namespace GraphQL\Executor\Promise\Adapter;
 
 use Amp\Deferred;
 use Amp\Failure;
-
-use function Amp\Promise\all;
-
 use Amp\Promise as AmpPromise;
 use Amp\Success;
+use GraphQL\Error\InvariantViolation;
 use GraphQL\Executor\Promise\Promise;
 use GraphQL\Executor\Promise\PromiseAdapter;
+
+use function Amp\Promise\all;
 
 class AmpPromiseAdapter implements PromiseAdapter
 {
@@ -19,12 +19,14 @@ class AmpPromiseAdapter implements PromiseAdapter
         return $value instanceof AmpPromise;
     }
 
+    /** @throws InvariantViolation */
     public function convertThenable($thenable): Promise
     {
         return new Promise($thenable, $this);
     }
 
-    public function then(Promise $promise, ?callable $onFulfilled = null, ?callable $onRejected = null): Promise
+    /** @throws InvariantViolation */
+    public function then(Promise $promise, callable $onFulfilled = null, callable $onRejected = null): Promise
     {
         $deferred = new Deferred();
         $onResolve = static function (?\Throwable $reason, $value) use ($onFulfilled, $onRejected, $deferred): void {
@@ -47,6 +49,7 @@ class AmpPromiseAdapter implements PromiseAdapter
         return new Promise($deferred->promise(), $this);
     }
 
+    /** @throws InvariantViolation */
     public function create(callable $resolver): Promise
     {
         $deferred = new Deferred();
@@ -63,6 +66,10 @@ class AmpPromiseAdapter implements PromiseAdapter
         return new Promise($deferred->promise(), $this);
     }
 
+    /**
+     * @throws \Error
+     * @throws InvariantViolation
+     */
     public function createFulfilled($value = null): Promise
     {
         $promise = new Success($value);
@@ -70,6 +77,7 @@ class AmpPromiseAdapter implements PromiseAdapter
         return new Promise($promise, $this);
     }
 
+    /** @throws InvariantViolation */
     public function createRejected(\Throwable $reason): Promise
     {
         $promise = new Failure($reason);
@@ -77,6 +85,10 @@ class AmpPromiseAdapter implements PromiseAdapter
         return new Promise($promise, $this);
     }
 
+    /**
+     * @throws \Error
+     * @throws InvariantViolation
+     */
     public function all(iterable $promisesOrValues): Promise
     {
         /** @var array<AmpPromise<mixed>> $promises */

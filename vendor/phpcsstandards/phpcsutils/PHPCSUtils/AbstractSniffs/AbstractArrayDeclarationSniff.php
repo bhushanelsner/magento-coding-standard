@@ -42,7 +42,7 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int, array<string, mixed>>
      */
     protected $tokens;
 
@@ -79,7 +79,7 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int, array<string, int|string>>
      */
     protected $arrayItems;
 
@@ -108,7 +108,7 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int|string, int|string>
      */
     private $acceptedTokens = [
         \T_NULL                     => \T_NULL,
@@ -152,7 +152,7 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
      *
      * @codeCoverageIgnore
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {
@@ -184,9 +184,14 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
             return;
         }
 
+        $openClose = Arrays::getOpenClose($phpcsFile, $stackPtr, true);
+        if ($openClose === false) {
+            // Parse error or live coding.
+            return;
+        }
+
         $this->stackPtr    = $stackPtr;
         $this->tokens      = $phpcsFile->getTokens();
-        $openClose         = Arrays::getOpenClose($phpcsFile, $stackPtr, true);
         $this->arrayOpener = $openClose['opener'];
         $this->arrayCloser = $openClose['closer'];
         $this->itemCount   = \count($this->arrayItems);
@@ -199,7 +204,8 @@ abstract class AbstractArrayDeclarationSniff implements Sniff
         $this->processArray($phpcsFile);
 
         // Reset select properties between calls to this sniff to lower memory usage.
-        unset($this->tokens, $this->arrayItems);
+        $this->tokens     = [];
+        $this->arrayItems = [];
     }
 
     /**

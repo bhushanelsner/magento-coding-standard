@@ -179,3 +179,10 @@ class AlsoDeprecatedButHandler
 
 }
 
+/**
+ * @package this tag should not be used
+ */
+class OnlyUselessCommentContent
+{
+
+}

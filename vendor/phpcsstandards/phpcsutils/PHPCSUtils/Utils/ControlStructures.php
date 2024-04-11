@@ -199,7 +199,8 @@ final class ControlStructures
      * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the token we are checking.
      *
-     * @return array Array with information about the caught Exception(s).
+     * @return array<int, array<string, string|int>>
+     *               Array with information about the caught Exception(s).
      *               The returned array will contain the following information for
      *               each caught exception:
      *               ```php
@@ -209,6 +210,7 @@ final class ControlStructures
      *                 'type_end_token' => integer, // The stack pointer to the end of the type declaration.
      *               )
      *               ```
+     *               In case of an invalid catch structure, the array may be empty.
      *
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified `$stackPtr` is not of
      *                                                      type `T_CATCH` or doesn't exist.
@@ -243,12 +245,14 @@ final class ControlStructures
             }
 
             if (isset(Collections::namespacedNameTokens()[$tokens[$i]['code']]) === false) {
-                // Add the current exception to the result array.
-                $exceptions[] = [
-                    'type'           => $foundName,
-                    'type_token'     => $firstToken,
-                    'type_end_token' => $lastToken,
-                ];
+                // Add the current exception to the result array if one was found.
+                if ($foundName !== '') {
+                    $exceptions[] = [
+                        'type'           => $foundName,
+                        'type_token'     => $firstToken,
+                        'type_end_token' => $lastToken,
+                    ];
+                }
 
                 if ($tokens[$i]['code'] === \T_BITWISE_OR) {
                     // Multi-catch. Reset and continue.

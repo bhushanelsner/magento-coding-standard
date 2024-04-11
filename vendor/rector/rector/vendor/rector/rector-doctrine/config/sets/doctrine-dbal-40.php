@@ -1,10 +1,10 @@
 <?php
 
 declare (strict_types=1);
-namespace RectorPrefix202301;
+namespace RectorPrefix202308;
 
 use Rector\Config\RectorConfig;
-use Rector\Doctrine\Rector\MethodCall\ChangeCompositeExpressionAddMultipleWithWithRector;
+use Rector\Doctrine\Dbal40\Rector\MethodCall\ChangeCompositeExpressionAddMultipleWithWithRector;
 use Rector\Renaming\Rector\ClassConstFetch\RenameClassConstFetchRector;
 use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
 use Rector\Renaming\Rector\Name\RenameClassRector;
@@ -35,6 +35,10 @@ return static function (RectorConfig $rectorConfig) : void {
     $rectorConfig->ruleWithConfiguration(RenameClassConstFetchRector::class, [
         // @see https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md#bc-break-removed-connectionparam__array-constants
         new RenameClassAndConstFetch('Doctrine\\DBAL\\Connection', 'PARAM_STR_ARRAY', 'Doctrine\\DBAL\\ArrayParameterType', 'STRING'),
+    ]);
+    $rectorConfig->ruleWithConfiguration(RenameClassConstFetchRector::class, [
+        // @see https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md#bc-break-removed-connectionparam__array-constants
+        new RenameClassAndConstFetch('Doctrine\\DBAL\\Connection', 'PARAM_INT_ARRAY', 'Doctrine\\DBAL\\ArrayParameterType', 'INTEGER'),
     ]);
     $rectorConfig->ruleWithConfiguration(RenameMethodRector::class, [
         // @see https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md#bc-break-removed-connection_schemamanager-and-connectiongetschemamanager

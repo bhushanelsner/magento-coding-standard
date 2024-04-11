@@ -5,6 +5,8 @@ PHPUnit Polyfills
 [![CS Build Status](https://github.com/Yoast/PHPUnit-Polyfills/actions/workflows/cs.yml/badge.svg)](https://github.com/Yoast/PHPUnit-Polyfills/actions/workflows/cs.yml)
 [![Lint Build Status](https://github.com/Yoast/PHPUnit-Polyfills/actions/workflows/lint.yml/badge.svg)](https://github.com/Yoast/PHPUnit-Polyfills/actions/workflows/lint.yml)
 [![Test Build Status](https://github.com/Yoast/PHPUnit-Polyfills/actions/workflows/test.yml/badge.svg)](https://github.com/Yoast/PHPUnit-Polyfills/actions/workflows/test.yml)
+[![Coverage Status](https://coveralls.io/repos/github/Yoast/PHPUnit-Polyfills/badge.svg?branch=1.x)](https://coveralls.io/github/Yoast/PHPUnit-Polyfills?branch=1.x)
+
 [![Minimum PHP Version](https://img.shields.io/packagist/php-v/yoast/phpunit-polyfills.svg?maxAge=3600)](https://packagist.org/packages/yoast/phpunit-polyfills)
 [![License: BSD3](https://poser.pugx.org/yoast/phpunit-polyfills/license)](https://github.com/Yoast/PHPUnit-Polyfills/blob/main/LICENSE)
 
@@ -81,7 +83,7 @@ This means that features which PHPUnit no longer supports in PHPUnit 10.x, like 
 Please refer to the [PHPUnit 10 release notification] and [PHPUnit 10 changelog] to inform your decision on whether or not to upgrade (yet).
 
 [PHPUnit 10 release notification]: https://phpunit.de/announcements/phpunit-10.html
-[PHPUnit 10 changelog]:            https://github.com/sebastianbergmann/phpunit/blob/main/ChangeLog-10.0.md
+[PHPUnit 10 changelog]:            https://github.com/sebastianbergmann/phpunit/blob/10.0.19/ChangeLog-10.0.md
 
 
 Using this library
@@ -479,6 +481,21 @@ The `assertObjectEquals()` assertion was introduced in PHPUnit 9.4.0.
 
 [`Assert::assertObjectEquals()`]: https://docs.phpunit.de/en/9.6/assertions.html#assertobjectequals
 
+#### PHPUnit < 9.6.11: `Yoast\PHPUnitPolyfills\Polyfills\AssertObjectProperty`
+
+Polyfills the following method:
+|                                       |                                          |
+|---------------------------------------|------------------------------------------|
+| `Assert::assertObjectHasProperty()` | `Assert::assertObjectNotHasProperty()` |
+
+These methods were introduced in PHPUnit 10.1.0 as alternatives to the `Assert::assertObjectHasAttribute()` and `Assert::assertObjectNotHasAttribute()` methods, which were hard deprecated (warning) in PHPUnit 9.6.1 and removed in PHPUnit 10.0.0.
+
+These methods were later backported to the PHPUnit 9 branch and included in the PHPUnit 9.6.11 release.
+
+<!--
+COMMENT: No documentation available (yet) for these assertions on the PHPUnit site.
+-->
+
 
 ### Helper traits
 
@@ -699,10 +716,10 @@ For frequently used, removed PHPUnit functionality, "helpers" may be provided. T
 
 #### Removed functionality without PHPUnit native replacement
 
-| PHPUnit | Removed               | Issue     | Remarks                |
-|---------|-----------------------|-----------|------------------------|
+| PHPUnit | Removed               | Issue          | Remarks                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------|-----------------------|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 9.0.0   | `assertArraySubset()` | [#1][issue #1] | The [`dms/phpunit-arraysubset-asserts`](https://packagist.org/packages/dms/phpunit-arraysubset-asserts) package polyfills this functionality.<br/>As of [version 0.3.0](https://github.com/rdohms/phpunit-arraysubset-asserts/releases/tag/v0.3.0) this package can be installed in combination with PHP 5.4 - current and PHPUnit 4.8.36/5.7.21 - current.<br/>Alternatively, tests can be refactored using the patterns outlined in [issue #1]. |
-| 9.0.0   | `assertAttribute*()`  | [#2][issue #2] | Refactor the tests to not directly test private/protected properties.<br/>As an interim solution, the [`Yoast\PHPUnitPolyfills\Helpers\AssertAttributeHelper`](#yoastphpunitpolyfillshelpersassertattributehelper) trait is available. |
+| 9.0.0   | `assertAttribute*()`  | [#2][issue #2] | Refactor the tests to not directly test private/protected properties.<br/>As an interim solution, the [`Yoast\PHPUnitPolyfills\Helpers\AssertAttributeHelper`](#yoastphpunitpolyfillshelpersassertattributehelper) trait is available.                                                                                                                                                                                                            |
 
 [issue #1]: https://github.com/Yoast/PHPUnit-Polyfills/issues/1
 [issue #2]: https://github.com/Yoast/PHPUnit-Polyfills/issues/2

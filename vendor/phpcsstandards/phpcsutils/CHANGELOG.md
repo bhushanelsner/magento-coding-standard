@@ -9,6 +9,112 @@ This projects adheres to [Keep a CHANGELOG](https://keepachangelog.com/) and use
 
 _Nothing yet._
 
+
+## [1.0.9] - 2023-12-08
+
+### Added
+
+#### PHPCS BackCompat
+
+* `BCFile::getMemberProperties()`: sync with PHPCS 3.8.0 - support for PHP 8.2 `true` type. [#524]
+* `BCFile::getMethodProperties()`: sync with PHPCS 3.8.0 - support for PHP 8.2 `true` type. [#524]
+* `BCFile::getMethodParameters()`: sync with PHPCS 3.8.0 - support for PHP 8.2 `true` type. [#524]
+
+### Changed
+
+#### TestUtils
+
+* Significant performance improvement for the [`UtilityMethodTestCase`]. [#525]
+
+#### Other
+
+* Dropped support for [PHP_CodeSniffer] < 3.8.0. [#523]
+    Please ensure you run `composer update phpcsstandards/phpcsutils --with-dependencies` to benefit from this.
+* Small improvements to the documentation website generation. Includes a contribution from [@fredden].
+* Various housekeeping and documentation improvements. Includes a contribution from [@fredden].
+
+[#523]: https://github.com/PHPCSStandards/PHPCSUtils/pull/523
+[#524]: https://github.com/PHPCSStandards/PHPCSUtils/pull/524
+[#525]: https://github.com/PHPCSStandards/PHPCSUtils/pull/525
+
+
+## [1.0.8] - 2023-07-17
+
+### Changed
+
+#### PHPCS BackCompat
+
+* `BCFile::getDeclarationName()`: sync with PHPCS 3.8.0 - support for functions called `self`, `parent` or `static` which return by reference. [#494]
+
+#### Other
+
+* Various housekeeping and minor documentation improvements.
+
+### Fixed
+
+#### Fixers
+
+* The [`SpacesFixer`] will no longer throw an (incorrect) exception when the second pointer passed is a comment token and this comment token is the last content in a file. [#493]
+
+[#493]: https://github.com/PHPCSStandards/PHPCSUtils/pull/493
+[#494]: https://github.com/PHPCSStandards/PHPCSUtils/pull/494
+
+
+## [1.0.7] - 2023-07-10
+
+### Changed
+
+#### Other
+
+* Various housekeeping and maintenance updates, including making the test suite compatible with PHPUnit 10.
+
+### Fixed
+
+#### Utils
+
+* The `Arrays::getDoubleArrowPtr()` method could previously get confused over a double arrow in a keyed list used as an array value. [#485]
+
+[#485]: https://github.com/PHPCSStandards/PHPCSUtils/pull/485
+
+
+## [1.0.6] - 2023-05-27
+
+### Changed
+
+#### PHPCS BackCompat
+
+* `BCFile::getClassProperties()`: sync with PHPCS 3.8.0 - support for PHP 8.2 `readonly` classes. [#470]
+* `BCFile::getMethodParameters()`: sync with PHPCS 3.8.0 - support for constructor property promotion with `readonly` properties without explicit visibility. [#472]
+
+#### Utils
+
+* The results of the following methods will now (also) be cached for improved performance when multiple sniffs call these functions for the same token during a PHPCS run. [#464], [#466]
+    - `FunctionDeclarations::getProperties()`
+    - `Variables::getMemberProperties()`
+* Additionally, the results of the `UseStatements::splitImportUseStatement()` method will be cached more often and the cache checked earlier. [#467]
+* The return value of the `ControlStructures::getCaughtExceptions()` method will no longer contain "empty" entries for catch statements without a named exception. It will return an empty array instead. [#474]
+
+#### Other
+
+* Various small housekeeping and maintenance updates.
+
+### Fixed
+
+### Abstract Sniffs
+
+* `AbstractArrayDeclarationSniff`: fixed a potential "Trying to access array offset on value of type bool" PHP notice. [#476]
+* `AbstractArrayDeclarationSniff`: the abstract will no longer trigger potentially available magic `__get()`/`__set()` etc methods. [#477]
+
+[#464]: https://github.com/PHPCSStandards/PHPCSUtils/pull/464
+[#466]: https://github.com/PHPCSStandards/PHPCSUtils/pull/466
+[#467]: https://github.com/PHPCSStandards/PHPCSUtils/pull/467
+[#470]: https://github.com/PHPCSStandards/PHPCSUtils/pull/470
+[#472]: https://github.com/PHPCSStandards/PHPCSUtils/pull/472
+[#474]: https://github.com/PHPCSStandards/PHPCSUtils/pull/474
+[#476]: https://github.com/PHPCSStandards/PHPCSUtils/pull/476
+[#477]: https://github.com/PHPCSStandards/PHPCSUtils/pull/477
+
+
 ## [1.0.5] - 2023-04-17
 
 ### Fixed
@@ -850,6 +956,10 @@ This initial alpha release contains the following utility classes:
 
 
 [Unreleased]:   https://github.com/PHPCSStandards/PHPCSUtils/compare/stable...HEAD
+[1.0.9]:        https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.8...1.0.9
+[1.0.8]:        https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.7...1.0.8
+[1.0.7]:        https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.6...1.0.7
+[1.0.6]:        https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.5...1.0.6
 [1.0.5]:        https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.4...1.0.5
 [1.0.4]:        https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.3...1.0.4
 [1.0.3]:        https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.2...1.0.3
@@ -862,6 +972,7 @@ This initial alpha release contains the following utility classes:
 [1.0.0-alpha2]: https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.0-alpha1...1.0.0-alpha2
 
 [Composer PHPCS plugin]: https://github.com/PHPCSStandards/composer-installer
+[PHP_CodeSniffer]:       https://github.com/PHPCSStandards/PHP_CodeSniffer
 
 [`AbstractArrayDeclarationSniff`]: https://phpcsutils.com/phpdoc/classes/PHPCSUtils-AbstractSniffs-AbstractArrayDeclarationSniff.html
 [`BCFile`]:                        https://phpcsutils.com/phpdoc/classes/PHPCSUtils-BackCompat-BCFile.html
@@ -892,5 +1003,6 @@ This initial alpha release contains the following utility classes:
 [`UseStatements`]:                 https://phpcsutils.com/phpdoc/classes/PHPCSUtils-Utils-UseStatements.html
 [`Variables`]:                     https://phpcsutils.com/phpdoc/classes/PHPCSUtils-Utils-Variables.html
 
+[@fredden]:     https://github.com/fredden
 [@GaryJones]:   https://github.com/GaryJones
 [@szepeviktor]: https://github.com/szepeviktor

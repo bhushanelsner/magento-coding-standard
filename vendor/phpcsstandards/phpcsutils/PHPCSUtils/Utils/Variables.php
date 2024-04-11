@@ -13,6 +13,7 @@ namespace PHPCSUtils\Utils;
 use PHP_CodeSniffer\Exceptions\RuntimeException;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Internal\Cache;
 use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Scopes;
 use PHPCSUtils\Utils\TextStrings;
@@ -40,7 +41,7 @@ final class Variables
      *
      * @since 1.0.0
      *
-     * @var array <string> => <bool>
+     * @var array<string, bool>
      */
     public static $phpReservedVars = [
         '_SERVER'              => true,
@@ -81,7 +82,7 @@ final class Variables
      *   other non-property variables passed to the method.
      * - Defensive coding against incorrect calls to this method.
      * - Support PHP 8.0 identifier name tokens in property types, cross-version PHP & PHPCS.
-     * - Support for the PHP 8.2 `true` type.
+     * - The results of this function call are cached during a PHPCS run for faster response times.
      *
      * @see \PHP_CodeSniffer\Files\File::getMemberProperties()   Original source.
      * @see \PHPCSUtils\BackCompat\BCFile::getMemberProperties() Cross-version compatible version of the original.
@@ -92,7 +93,7 @@ final class Variables
      * @param int                         $stackPtr  The position in the stack of the `T_VARIABLE` token
      *                                               to acquire the properties for.
      *
-     * @return array Array with information about the class member variable.
+     * @return array<string, mixed> Array with information about the class member variable.
      *               The format of the return value is:
      *               ```php
      *               array(
@@ -125,6 +126,10 @@ final class Variables
 
         if (Scopes::isOOProperty($phpcsFile, $stackPtr) === false) {
             throw new RuntimeException('$stackPtr is not a class member var');
+        }
+
+        if (Cache::isCached($phpcsFile, __METHOD__, $stackPtr) === true) {
+            return Cache::get($phpcsFile, __METHOD__, $stackPtr);
         }
 
         $valid = Collections::propertyModifierKeywords() + Tokens::$emptyTokens;
@@ -177,12 +182,6 @@ final class Variables
         $nullableType       = false;
         $propertyTypeTokens = Collections::propertyTypeTokens();
 
-        /*
-         * BC PHPCS < 3.x.x: The union type separator is not (yet) retokenized correctly
-         * for union types containing the `true` type.
-         */
-        $propertyTypeTokens[\T_BITWISE_OR] = \T_BITWISE_OR;
-
         if ($i < $stackPtr) {
             // We've found a type.
             for ($i; $i < $stackPtr; $i++) {
@@ -210,7 +209,7 @@ final class Variables
             }
         }
 
-        return [
+        $returnValue = [
             'scope'           => $scope,
             'scope_specified' => $scopeSpecified,
             'is_static'       => $isStatic,
@@ -220,6 +219,9 @@ final class Variables
             'type_end_token'  => $typeEndToken,
             'nullable_type'   => $nullableType,
         ];
+
+        Cache::set($phpcsFile, __METHOD__, $stackPtr, $returnValue);
+        return $returnValue;
     }
 
     /**

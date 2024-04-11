@@ -9,34 +9,34 @@ final class UseImportsRemover
 {
     /**
      * @param Stmt[] $stmts
-     * @param string[] $removedShortUses
+     * @param string[] $removedUses
      * @return Stmt[]
      */
-    public function removeImportsFromStmts(array $stmts, array $removedShortUses) : array
+    public function removeImportsFromStmts(array $stmts, array $removedUses) : array
     {
-        foreach ($stmts as $stmtKey => $stmt) {
+        foreach ($stmts as $key => $stmt) {
             if (!$stmt instanceof Use_) {
                 continue;
             }
-            $this->removeUseFromUse($removedShortUses, $stmt);
-            // nothing left → remove
+            $stmt = $this->removeUseFromUse($removedUses, $stmt);
+            // remove empty uses
             if ($stmt->uses === []) {
-                unset($stmts[$stmtKey]);
+                unset($stmts[$key]);
             }
         }
         return $stmts;
     }
     /**
-     * @param string[] $removedShortUses
+     * @param string[] $removedUses
      */
-    private function removeUseFromUse(array $removedShortUses, Use_ $use) : void
+    private function removeUseFromUse(array $removedUses, Use_ $use) : Use_
     {
         foreach ($use->uses as $usesKey => $useUse) {
-            foreach ($removedShortUses as $removedShortUse) {
-                if ($useUse->name->toString() === $removedShortUse) {
-                    unset($use->uses[$usesKey]);
-                }
+            $useName = $useUse->name->toString();
+            if (\in_array($useName, $removedUses, \true)) {
+                unset($use->uses[$usesKey]);
             }
         }
+        return $use;
     }
 }

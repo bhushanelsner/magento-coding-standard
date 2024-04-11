@@ -59,6 +59,8 @@ use GraphQL\Language\AST\VariableNode;
  * $ast = GraphQL\Language\Parser::parse($query);
  * $printed = GraphQL\Language\Printer::doPrint($ast);
  * ```
+ *
+ * @see \GraphQL\Tests\Language\PrinterTest
  */
 class Printer
 {
@@ -77,19 +79,20 @@ class Printer
         return $instance->printAST($ast);
     }
 
-    protected function __construct()
-    {
-    }
+    protected function __construct() {}
 
     /**
      * Recursively traverse an AST depth-first and produce a pretty string.
+     *
+     * @throws \JsonException
      */
     public function printAST(Node $node): string
     {
         return $this->p($node);
     }
 
-    protected function p(?Node $node, bool $isDescription = false): string
+    /** @throws \JsonException */
+    protected function p(?Node $node): string
     {
         if ($node === null) {
             return '';
@@ -97,6 +100,7 @@ class Printer
 
         switch (true) {
             case $node instanceof ArgumentNode:
+            case $node instanceof ObjectFieldNode:
                 return $this->p($node->name) . ': ' . $this->p($node->value);
 
             case $node instanceof BooleanValueNode:
@@ -163,6 +167,9 @@ class Printer
                 );
 
             case $node instanceof EnumValueNode:
+            case $node instanceof FloatValueNode:
+            case $node instanceof IntValueNode:
+            case $node instanceof NameNode:
                 return $node->value;
 
             case $node instanceof FieldDefinitionNode:
@@ -190,21 +197,31 @@ class Printer
                 );
 
             case $node instanceof FieldNode:
+                $prefix = $this->wrap('', $node->alias->value ?? null, ': ') . $this->p($node->name);
+
+                $argsLine = $prefix . $this->wrap(
+                    '(',
+                    $this->printList($node->arguments, ', '),
+                    ')'
+                );
+                if (strlen($argsLine) > 80) {
+                    $argsLine = $prefix . $this->wrap(
+                        "(\n",
+                        $this->indent(
+                            $this->printList($node->arguments, "\n")
+                        ),
+                        "\n)"
+                    );
+                }
+
                 return $this->join(
                     [
-                        $this->wrap('', $node->alias->value ?? null, ': ') . $this->p($node->name) . $this->wrap(
-                            '(',
-                            $this->printList($node->arguments, ', '),
-                            ')'
-                        ),
+                        $argsLine,
                         $this->printList($node->directives, ' '),
                         $this->p($node->selectionSet),
                     ],
                     ' '
                 );
-
-            case $node instanceof FloatValueNode:
-                return $node->value;
 
             case $node instanceof FragmentDefinitionNode:
                 // Note: fragment variable definitions are experimental and may be changed or removed in the future.
@@ -294,17 +311,11 @@ class Printer
                     ' '
                 );
 
-            case $node instanceof IntValueNode:
-                return $node->value;
-
             case $node instanceof ListTypeNode:
                 return '[' . $this->p($node->type) . ']';
 
             case $node instanceof ListValueNode:
                 return '[' . $this->printList($node->values, ', ') . ']';
-
-            case $node instanceof NameNode:
-                return $node->value;
 
             case $node instanceof NamedTypeNode:
                 return $this->p($node->name);
@@ -314,9 +325,6 @@ class Printer
 
             case $node instanceof NullValueNode:
                 return 'null';
-
-            case $node instanceof ObjectFieldNode:
-                return $this->p($node->name) . ': ' . $this->p($node->value);
 
             case $node instanceof ObjectTypeDefinitionNode:
                 return $this->addDescription($node->description, $this->join(
@@ -343,7 +351,7 @@ class Printer
                 );
 
             case $node instanceof ObjectValueNode:
-                return '{' . $this->printList($node->fields, ', ') . '}';
+                return "{ {$this->printList($node->fields, ', ')} }";
 
             case $node instanceof OperationDefinitionNode:
                 $op = $node->operation;
@@ -354,7 +362,7 @@ class Printer
 
                 // Anonymous queries with no directives or variable definitions can use
                 // the query short form.
-                return (\strlen($name) === 0) && (\strlen($directives) === 0) && $varDefs === '' && $op === 'query'
+                return $name === '' && $directives === '' && $varDefs === '' && $op === 'query'
                     ? $selectionSet
                     : $this->join([$op, $this->join([$name, $varDefs]), $directives, $selectionSet], ' ');
 
@@ -403,7 +411,7 @@ class Printer
 
             case $node instanceof StringValueNode:
                 if ($node->block) {
-                    return BlockString::print($node->value, $isDescription ? '' : '  ', true);
+                    return BlockString::print($node->value);
                 }
 
                 return \json_encode($node->value, JSON_THROW_ON_ERROR);
@@ -416,8 +424,8 @@ class Printer
                         'union',
                         $this->p($node->name),
                         $this->printList($node->directives, ' '),
-                        \strlen($typesStr) > 0
-                            ? '= ' . $typesStr
+                        $typesStr !== ''
+                            ? "= {$typesStr}"
                             : '',
                     ],
                     ' '
@@ -431,8 +439,8 @@ class Printer
                         'extend union',
                         $this->p($node->name),
                         $this->printList($node->directives, ' '),
-                        \strlen($typesStr) > 0
-                            ? '= ' . $typesStr
+                        $typesStr !== ''
+                            ? "= {$typesStr}"
                             : '',
                     ],
                     ' '
@@ -456,6 +464,8 @@ class Printer
      * @template TNode of Node
      *
      * @param NodeList<TNode> $list
+     *
+     * @throws \JsonException
      */
     protected function printList(NodeList $list, string $separator = ''): string
     {
@@ -473,6 +483,8 @@ class Printer
      * @template TNode of Node
      *
      * @param NodeList<TNode> $list
+     *
+     * @throws \JsonException
      */
     protected function printListBlock(NodeList $list): string
     {
@@ -488,9 +500,10 @@ class Printer
         return "{\n" . $this->indent($this->join($parts, "\n")) . "\n}";
     }
 
+    /** @throws \JsonException */
     protected function addDescription(?StringValueNode $description, string $body): string
     {
-        return $this->join([$this->p($description, true), $body], "\n");
+        return $this->join([$this->p($description), $body], "\n");
     }
 
     /**
@@ -515,9 +528,7 @@ class Printer
         return '  ' . \str_replace("\n", "\n  ", $string);
     }
 
-    /**
-     * @param array<string|null> $parts
-     */
+    /** @param array<string|null> $parts */
     protected function join(array $parts, string $separator = ''): string
     {
         return \implode($separator, \array_filter($parts));

@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace RectorPrefix202301\Symfony\Component\String\Inflector;
+namespace RectorPrefix202308\Symfony\Component\String\Inflector;
 
 final class EnglishInflector implements InflectorInterface
 {
@@ -43,12 +43,16 @@ final class EnglishInflector implements InflectorInterface
         ['nexo', 4, \false, \false, 'ox'],
         // indices (index), appendices (appendix), prices (price)
         ['seci', 4, \false, \true, ['ex', 'ix', 'ice']],
+        // codes (code)
+        ['sedoc', 5, \false, \true, 'code'],
         // selfies (selfie)
         ['seifles', 7, \true, \true, 'selfie'],
         // zombies (zombie)
         ['seibmoz', 7, \true, \true, 'zombie'],
         // movies (movie)
         ['seivom', 6, \true, \true, 'movie'],
+        // names (name)
+        ['seman', 5, \true, \false, 'name'],
         // conspectuses (conspectus), prospectuses (prospectus)
         ['sesutcep', 8, \true, \true, 'pectus'],
         // feet (foot)
@@ -65,6 +69,8 @@ final class EnglishInflector implements InflectorInterface
         ['sei', 3, \false, \true, 'y'],
         // accesses (access), addresses (address), kisses (kiss)
         ['sess', 4, \true, \false, 'ss'],
+        // statuses (status)
+        ['sesutats', 8, \true, \true, 'status'],
         // analyses (analysis), ellipses (ellipsis), fungi (fungus),
         // neuroses (neurosis), theses (thesis), emphases (emphasis),
         // oases (oasis), crises (crisis), houses (house), bases (base),
@@ -96,6 +102,8 @@ final class EnglishInflector implements InflectorInterface
         // waltzes (waltz), heroes (hero), bushes (bush), arches (arch),
         // shoes (shoe)
         ['se', 2, \true, \true, ['', 'e']],
+        // status (status)
+        ['sutats', 6, \true, \true, 'status'],
         // tags (tag)
         ['s', 1, \true, \true, ''],
         // chateaux (chateau)
@@ -194,6 +202,8 @@ final class EnglishInflector implements InflectorInterface
         ['sub', 3, \true, \true, 'buses'],
         // circuses (circus)
         ['suc', 3, \true, \true, 'cuses'],
+        // status (status)
+        ['sutats', 6, \true, \true, ['status', 'statuses']],
         // conspectuses (conspectus), prospectuses (prospectus)
         ['sutcep', 6, \true, \true, 'pectuses'],
         // fungi (fungus), alumni (alumnus), syllabi (syllabus), radii (radius)

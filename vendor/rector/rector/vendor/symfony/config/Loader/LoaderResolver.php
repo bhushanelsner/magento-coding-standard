@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace RectorPrefix202301\Symfony\Component\Config\Loader;
+namespace RectorPrefix202308\Symfony\Component\Config\Loader;
 
 /**
  * LoaderResolver selects a loader for a given resource.
@@ -34,7 +34,7 @@ class LoaderResolver implements LoaderResolverInterface
         }
     }
     /**
-     * @return \Symfony\Component\Config\Loader\LoaderInterface|true
+     * @return \Symfony\Component\Config\Loader\LoaderInterface|false
      * @param mixed $resource
      */
     public function resolve($resource, string $type = null)
@@ -46,6 +46,9 @@ class LoaderResolver implements LoaderResolverInterface
         }
         return \false;
     }
+    /**
+     * @return void
+     */
     public function addLoader(LoaderInterface $loader)
     {
         $this->loaders[] = $loader;

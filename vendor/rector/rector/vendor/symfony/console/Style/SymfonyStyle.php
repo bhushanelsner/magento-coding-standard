@@ -8,26 +8,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace RectorPrefix202301\Symfony\Component\Console\Style;
+namespace RectorPrefix202308\Symfony\Component\Console\Style;
 
-use RectorPrefix202301\Symfony\Component\Console\Exception\InvalidArgumentException;
-use RectorPrefix202301\Symfony\Component\Console\Exception\RuntimeException;
-use RectorPrefix202301\Symfony\Component\Console\Formatter\OutputFormatter;
-use RectorPrefix202301\Symfony\Component\Console\Helper\Helper;
-use RectorPrefix202301\Symfony\Component\Console\Helper\OutputWrapper;
-use RectorPrefix202301\Symfony\Component\Console\Helper\ProgressBar;
-use RectorPrefix202301\Symfony\Component\Console\Helper\SymfonyQuestionHelper;
-use RectorPrefix202301\Symfony\Component\Console\Helper\Table;
-use RectorPrefix202301\Symfony\Component\Console\Helper\TableCell;
-use RectorPrefix202301\Symfony\Component\Console\Helper\TableSeparator;
-use RectorPrefix202301\Symfony\Component\Console\Input\InputInterface;
-use RectorPrefix202301\Symfony\Component\Console\Output\ConsoleOutputInterface;
-use RectorPrefix202301\Symfony\Component\Console\Output\OutputInterface;
-use RectorPrefix202301\Symfony\Component\Console\Output\TrimmedBufferOutput;
-use RectorPrefix202301\Symfony\Component\Console\Question\ChoiceQuestion;
-use RectorPrefix202301\Symfony\Component\Console\Question\ConfirmationQuestion;
-use RectorPrefix202301\Symfony\Component\Console\Question\Question;
-use RectorPrefix202301\Symfony\Component\Console\Terminal;
+use RectorPrefix202308\Symfony\Component\Console\Exception\InvalidArgumentException;
+use RectorPrefix202308\Symfony\Component\Console\Exception\RuntimeException;
+use RectorPrefix202308\Symfony\Component\Console\Formatter\OutputFormatter;
+use RectorPrefix202308\Symfony\Component\Console\Helper\Helper;
+use RectorPrefix202308\Symfony\Component\Console\Helper\OutputWrapper;
+use RectorPrefix202308\Symfony\Component\Console\Helper\ProgressBar;
+use RectorPrefix202308\Symfony\Component\Console\Helper\SymfonyQuestionHelper;
+use RectorPrefix202308\Symfony\Component\Console\Helper\Table;
+use RectorPrefix202308\Symfony\Component\Console\Helper\TableCell;
+use RectorPrefix202308\Symfony\Component\Console\Helper\TableSeparator;
+use RectorPrefix202308\Symfony\Component\Console\Input\InputInterface;
+use RectorPrefix202308\Symfony\Component\Console\Output\ConsoleOutputInterface;
+use RectorPrefix202308\Symfony\Component\Console\Output\ConsoleSectionOutput;
+use RectorPrefix202308\Symfony\Component\Console\Output\OutputInterface;
+use RectorPrefix202308\Symfony\Component\Console\Output\TrimmedBufferOutput;
+use RectorPrefix202308\Symfony\Component\Console\Question\ChoiceQuestion;
+use RectorPrefix202308\Symfony\Component\Console\Question\ConfirmationQuestion;
+use RectorPrefix202308\Symfony\Component\Console\Question\Question;
+use RectorPrefix202308\Symfony\Component\Console\Terminal;
 /**
  * Output decorator helpers for the Symfony Style Guide.
  *
@@ -71,6 +72,8 @@ class SymfonyStyle extends OutputStyle
     }
     /**
      * Formats a message as a block of text.
+     *
+     * @return void
      * @param string|mixed[] $messages
      */
     public function block($messages, string $type = null, string $style = null, string $prefix = ' ', bool $padding = \false, bool $escape = \true)
@@ -80,18 +83,27 @@ class SymfonyStyle extends OutputStyle
         $this->writeln($this->createBlock($messages, $type, $style, $prefix, $padding, $escape));
         $this->newLine();
     }
+    /**
+     * @return void
+     */
     public function title(string $message)
     {
         $this->autoPrependBlock();
         $this->writeln([\sprintf('<comment>%s</>', OutputFormatter::escapeTrailingBackslash($message)), \sprintf('<comment>%s</>', \str_repeat('=', Helper::width(Helper::removeDecoration($this->getFormatter(), $message))))]);
         $this->newLine();
     }
+    /**
+     * @return void
+     */
     public function section(string $message)
     {
         $this->autoPrependBlock();
         $this->writeln([\sprintf('<comment>%s</>', OutputFormatter::escapeTrailingBackslash($message)), \sprintf('<comment>%s</>', \str_repeat('-', Helper::width(Helper::removeDecoration($this->getFormatter(), $message))))]);
         $this->newLine();
     }
+    /**
+     * @return void
+     */
     public function listing(array $elements)
     {
         $this->autoPrependText();
@@ -102,6 +114,7 @@ class SymfonyStyle extends OutputStyle
         $this->newLine();
     }
     /**
+     * @return void
      * @param string|mixed[] $message
      */
     public function text($message)
@@ -114,6 +127,8 @@ class SymfonyStyle extends OutputStyle
     }
     /**
      * Formats a command comment.
+     *
+     * @return void
      * @param string|mixed[] $message
      */
     public function comment($message)
@@ -121,6 +136,7 @@ class SymfonyStyle extends OutputStyle
         $this->block($message, null, null, '<fg=default;bg=default> // </>', \false, \false);
     }
     /**
+     * @return void
      * @param string|mixed[] $message
      */
     public function success($message)
@@ -128,6 +144,7 @@ class SymfonyStyle extends OutputStyle
         $this->block($message, 'OK', 'fg=black;bg=green', ' ', \true);
     }
     /**
+     * @return void
      * @param string|mixed[] $message
      */
     public function error($message)
@@ -135,6 +152,7 @@ class SymfonyStyle extends OutputStyle
         $this->block($message, 'ERROR', 'fg=white;bg=red', ' ', \true);
     }
     /**
+     * @return void
      * @param string|mixed[] $message
      */
     public function warning($message)
@@ -142,6 +160,7 @@ class SymfonyStyle extends OutputStyle
         $this->block($message, 'WARNING', 'fg=black;bg=yellow', ' ', \true);
     }
     /**
+     * @return void
      * @param string|mixed[] $message
      */
     public function note($message)
@@ -150,6 +169,8 @@ class SymfonyStyle extends OutputStyle
     }
     /**
      * Formats an info message.
+     *
+     * @return void
      * @param string|mixed[] $message
      */
     public function info($message)
@@ -157,12 +178,16 @@ class SymfonyStyle extends OutputStyle
         $this->block($message, 'INFO', 'fg=green', ' ', \true);
     }
     /**
+     * @return void
      * @param string|mixed[] $message
      */
     public function caution($message)
     {
         $this->block($message, 'CAUTION', 'fg=white;bg=red', ' ! ', \true);
     }
+    /**
+     * @return void
+     */
     public function table(array $headers, array $rows)
     {
         $this->createTable()->setHeaders($headers)->setRows($rows)->render();
@@ -170,6 +195,8 @@ class SymfonyStyle extends OutputStyle
     }
     /**
      * Formats a horizontal table.
+     *
+     * @return void
      */
     public function horizontalTable(array $headers, array $rows)
     {
@@ -183,6 +210,8 @@ class SymfonyStyle extends OutputStyle
      * * 'A title'
      * * ['key' => 'value']
      * * new TableSeparator()
+     *
+     * @return void
      * @param string|mixed[]|\Symfony\Component\Console\Helper\TableSeparator ...$list
      */
     public function definitionList(...$list)
@@ -245,15 +274,24 @@ class SymfonyStyle extends OutputStyle
         $questionChoice->setMultiselect($multiSelect);
         return $this->askQuestion($questionChoice);
     }
+    /**
+     * @return void
+     */
     public function progressStart(int $max = 0)
     {
         $this->progressBar = $this->createProgressBar($max);
         $this->progressBar->start();
     }
+    /**
+     * @return void
+     */
     public function progressAdvance(int $step = 1)
     {
         $this->getProgressBar()->advance($step);
     }
+    /**
+     * @return void
+     */
     public function progressFinish()
     {
         $this->getProgressBar()->finish();
@@ -291,13 +329,19 @@ class SymfonyStyle extends OutputStyle
         $this->questionHelper = $this->questionHelper ?? new SymfonyQuestionHelper();
         $answer = $this->questionHelper->ask($this->input, $this, $question);
         if ($this->input->isInteractive()) {
+            if ($this->output instanceof ConsoleSectionOutput) {
+                // add the new line of the `return` to submit the input to ConsoleSectionOutput, because ConsoleSectionOutput is holding all it's lines.
+                // this is relevant when a `ConsoleSectionOutput::clear` is called.
+                $this->output->addNewLineOfInputSubmit();
+            }
             $this->newLine();
             $this->bufferedOutput->write("\n");
         }
         return $answer;
     }
     /**
-     * @param string|mixed[] $messages
+     * @return void
+     * @param string|iterable $messages
      */
     public function writeln($messages, int $type = self::OUTPUT_NORMAL)
     {
@@ -310,7 +354,8 @@ class SymfonyStyle extends OutputStyle
         }
     }
     /**
-     * @param string|mixed[] $messages
+     * @return void
+     * @param string|iterable $messages
      */
     public function write($messages, bool $newline = \false, int $type = self::OUTPUT_NORMAL)
     {
@@ -322,6 +367,9 @@ class SymfonyStyle extends OutputStyle
             $this->writeBuffer($message, $newline, $type);
         }
     }
+    /**
+     * @return void
+     */
     public function newLine(int $count = 1)
     {
         parent::newLine($count);
@@ -363,7 +411,7 @@ class SymfonyStyle extends OutputStyle
     {
         $fetched = $this->bufferedOutput->fetch();
         // Prepend new line if last char isn't EOL:
-        if (\substr_compare($fetched, "\n", -\strlen("\n")) !== 0) {
+        if ($fetched && \substr_compare($fetched, "\n", -\strlen("\n")) !== 0) {
             $this->newLine();
         }
     }
